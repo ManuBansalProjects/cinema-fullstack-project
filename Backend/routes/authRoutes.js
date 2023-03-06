@@ -104,7 +104,7 @@ router.post('/login', body('email').isEmail(), body('password').isLength({ min: 
 })
 
 
-
+//sending forgot password email to user
 router.post('/sendemail', body('email').isEmail(), async (req, res) => {
   try {
     console.log('sending forgot-password to user"s email', req.body.email);

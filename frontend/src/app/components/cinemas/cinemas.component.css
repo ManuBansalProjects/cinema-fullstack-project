@@ -1,0 +1,27 @@
+
+/* admin tables */
+
+.heading{
+  display: flex;
+  justify-content: space-between;
+}
+.heading-name{
+  margin: 15px;
+}
+.addnewcinema{
+  margin: 15px;
+  text-decoration: none;
+}
+
+
+
+.main{
+  display: flex;
+  justify-content: center;
+}
+.records{
+  width: 70%;
+}
+.operations{
+  margin-left: 4px;
+}

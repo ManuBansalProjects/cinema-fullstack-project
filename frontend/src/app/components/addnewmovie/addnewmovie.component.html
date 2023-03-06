@@ -1,0 +1,37 @@
+<div class="page" >
+    
+    <div class="form-container">
+      <h1>Adding a new-Movie</h1>
+  
+      <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+        <div>
+          <label>Name</label><br>
+          <input type="text" name="name" ngModel #name="ngModel"  required>
+        </div>
+        <span class="warning" *ngIf="name.touched && name.invalid">Name is invalid</span>
+        
+  
+        <br><br>
+  
+        <div>
+          <label>Released Date</label><br>
+          <input type="date" name="releaseddate" ngModel #releaseddate="ngModel" required>
+        </div>
+        <span class="warning" *ngIf="releaseddate.touched && releaseddate.invalid">released Date is invalid</span>
+  
+        <br><br>
+  
+        <div>
+          <label>Descrption</label><br>
+          <input type="text" name="descrp" ngModel #descrp="ngModel" required >
+        </div>
+        <span class="warning" *ngIf="descrp.touched && descrp.invalid">Descrption is invalid</span>
+  
+        <br><br>
+  
+        <button class="formBtn" mat-stroked-button color="warn"   type="button" (click)="cancel()">Cancel</button>
+        <button class="formBtn" mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Submit</button>
+      </form>
+    </div>
+  
+    </div> 

@@ -1,0 +1,12 @@
+<nav class='navbar'>
+  <a class="links" routerLink="/movies">
+    <li class="items">Movies</li>
+  </a>
+  <a class="links" routerLink="/cinemas">
+    <li class="items">Cinemas</li>
+  </a>
+
+  <a class="links" routerLink="/users" *ngIf="role==1">
+    <li class="items">Users</li>
+  </a>
+</nav>

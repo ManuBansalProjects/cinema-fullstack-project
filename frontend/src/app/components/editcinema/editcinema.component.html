@@ -1,0 +1,45 @@
+<div class="page" >
+    
+    <div  class="form-container">
+      <h1>Editing a cinema</h1>
+  
+      <form [formGroup]="myform" (ngSubmit)="onSubmit()">
+        <div>
+          <label>Name</label><br>
+          <input type="text" formControlName="name" >
+        </div>
+        <span class="warning" *ngIf="myform.controls['name'].touched && myform.controls['name'].invalid">Name is invalid</span>
+        
+  
+        <br><br>
+  
+        <div>
+          <label>Address</label><br>
+          <input type="text" formControlName="address">
+        </div>
+        <span class="warning" *ngIf="myform.controls['address'].touched && myform.controls['address'].invalid">Address is invalid</span>
+  
+        <br><br>
+  
+        <div>
+          <label>City</label><br>
+          <input type="text" formControlName="city">
+        </div>
+        <span class="warning" *ngIf="myform.controls['city'].touched && myform.controls['city'].invalid">City is invalid</span>
+  
+        <br><br>
+  
+        <div>
+          <label>Mobile</label><br>
+          <input type="text" formControlName="mobile">
+        </div>
+        <span class="warning" *ngIf="myform.controls['mobile'].touched && myform.controls['mobile'].invalid">Mobile is invalid</span>
+  
+        <br><br>
+  
+        <button class="formBtn" mat-stroked-button color="warn"   type="button" (click)="cancel()">Cancel</button>
+        <button class="formBtn" mat-raised-button color="primary" type="submit" [disabled]="myform.invalid">Submit</button>
+      </form>
+    </div>
+  
+</div> 

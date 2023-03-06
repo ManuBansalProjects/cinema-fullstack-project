@@ -1,0 +1,7 @@
+<img *ngIf="moviedetails!=undefined" src="../../../assets/movies-posters/{{moviedetails.name}}.jpg" >
+
+<h2>{{moviedetails?.name}} </h2>
+<h4>{{moviedetails?.descrp}} </h4>
+<h5>Released Date {{moviedetails?.releaseddate}}</h5>
+
+<a *ngIf="moviedetails!=undefined" routerLink="/movies/{{moviedetails.name}}/{{moviedetails.id}}/bookmovie">Book ticket</a>

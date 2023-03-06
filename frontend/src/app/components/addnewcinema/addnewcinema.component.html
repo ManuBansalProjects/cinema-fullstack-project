@@ -1,0 +1,45 @@
+<div class="page" >
+    
+    <div class="form-container">
+      <h1>Adding a new-cinema</h1>
+  
+      <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+        <div>
+          <label>Name</label><br>
+          <input type="text" name="name" ngModel #name="ngModel"  required>
+        </div>
+        <span class="warning" *ngIf="name.touched && name.invalid">Name is invalid</span>
+        
+  
+        <br><br>
+  
+        <div>
+          <label>Address</label><br>
+          <input type="text" name="address" ngModel #address="ngModel" required>
+        </div>
+        <span class="warning" *ngIf="address.touched && address.invalid">Address is invalid</span>
+  
+        <br><br>
+  
+        <div>
+          <label>City</label><br>
+          <input type="text" name="city" ngModel #city="ngModel" required >
+        </div>
+        <span class="warning" *ngIf="city.touched && city.invalid">City is invalid</span>
+  
+        <br><br>
+  
+        <div>
+          <label>Mobile</label><br>
+          <input type="text" name="mobile" ngModel #mobile="ngModel" required>
+        </div>
+        <span class="warning" *ngIf="mobile.touched && mobile.invalid">Mobile is invalid</span>
+  
+        <br><br>
+  
+        <button class="formBtn" mat-stroked-button color="warn"   type="button" (click)="cancel()">Cancel</button>
+        <button class="formBtn" mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Submit</button>
+      </form>
+    </div>
+  
+    </div> 

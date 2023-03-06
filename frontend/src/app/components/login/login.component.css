@@ -1,0 +1,32 @@
+.page{
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.formContainer{
+  width: fit-content;
+  height: fit-content;
+  border: 1px solid red;
+  padding: 30px;
+}
+
+.logo{
+  display: flex;
+  justify-content: center;
+}
+
+.star{
+  color: red;
+}
+
+.warning{
+  color: red;
+  font-weight: bolder;
+}
+
+.submitBtn{
+  width: 178px;
+}
+

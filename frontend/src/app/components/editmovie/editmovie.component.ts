@@ -17,7 +17,8 @@ export class EditmovieComponent implements OnInit{
   form=new FormGroup({
     name: new FormControl('',[Validators.required]),
     releaseddate: new FormControl('',[Validators.required]),
-    descrp: new FormControl('',[Validators.required])
+    descrp: new FormControl('',[Validators.required]),
+    movieposter: new FormControl('',[Validators.required])
   });
 
   ngOnInit(): void {
@@ -37,7 +38,8 @@ export class EditmovieComponent implements OnInit{
           this.form=new FormGroup({
             name: new FormControl(movie.name,[Validators.required]),
             releaseddate: new FormControl(movie.releaseddate,[Validators.required]),
-            descrp: new FormControl(movie.descrp,[Validators.required])
+            descrp: new FormControl(movie.descrp,[Validators.required]),
+            movieposter: new FormControl(movie.movieposter,[Validators.required])
           });
         })
 

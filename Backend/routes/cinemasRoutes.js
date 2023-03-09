@@ -11,21 +11,6 @@ const knex = require('knex')(knexConfig);
 const { body, validationResult } = require('express-validator');
 
 
-
-router.post('/getcinema', async (req, res) => {
-  try {
-    console.log('listing a particular cinema details');
-    console.log(req.body);
-    const result = await knex.withSchema('cinemabackend').table('cinemasdetails').where('id', req.body.cinemaid);
-    console.log(result);
-    res.json(result[0]);
-  }
-  catch (error) {
-    console.log(error);
-    res.status(400);
-  }
-});
-
 //middleware-> for token checking
 const { tokenChecking } = require('../middlewares/checkingPermissions.js');
 router.use(tokenChecking);
@@ -34,37 +19,10 @@ router.use(tokenChecking);
 
 
 
-// //listing all the cinemas details
-// //for both
-// router.get('/getactivecinemas', async (req, res) => {
-//   try {
-//     console.log('listing active cinemas details');
-//     const result = await knex.withSchema('cinemabackend').table('cinemasdetails').where('isactive', true);
-//     res.json(result);
-//   }
-//   catch (error) {
-//     console.log(error);
-//     res.status(400);
-//   }
-// });
-
-
-// //for both
-// router.get('/getunactivecinemas', async (req, res) => {
-//   try {
-//     console.log('listing unactive cinemas details');
-//     const result = await knex.withSchema('cinemabackend').table('cinemasdetails').where('isactive', false);
-//     res.json(result);
-//   }
-//   catch (error) {
-//     console.log(error);
-//     res.status(400);
-//   }
-// });
 
 
 
-//for both
+//getting all cinemas
 router.get('/getcinemas', async (req, res) => {
   try {
     console.log('listing all the cinemas details');
@@ -78,7 +36,7 @@ router.get('/getcinemas', async (req, res) => {
 });
 
 
-//for both
+//getting a particular cinema
 router.get('/getcinema/:id', async (req, res) => {
   try {
     console.log('listing a particular cinema details');
@@ -95,7 +53,6 @@ router.get('/getcinema/:id', async (req, res) => {
 
 
 //adding a new cinema
-//for admin
 router.post('/addcinema', body('mobile').isInt(), async (req, res) => {
   try {
     console.log('adding a new cinema');
@@ -117,7 +74,6 @@ router.post('/addcinema', body('mobile').isInt(), async (req, res) => {
 
 
 //updating a particular cinema
-//for admin
 router.put('/editcinema/:id', body('mobile').isInt(), async (req, res) => {
   try {
     console.log('updating a cinema details');
@@ -151,7 +107,6 @@ router.put('/editcinema/:id', body('mobile').isInt(), async (req, res) => {
 
 
 //deleting a particualar cinema
-//for admin
 router.delete('/delete/:id', async (req, res) => {
   try {
     console.log('deleting a particular cinema');
@@ -167,6 +122,36 @@ router.delete('/delete/:id', async (req, res) => {
     console.log(error);
   }
 })
+
+
+
+// //listing all the cinemas details
+// //for both
+// router.get('/getactivecinemas', async (req, res) => {
+//   try {
+//     console.log('listing active cinemas details');
+//     const result = await knex.withSchema('cinemabackend').table('cinemasdetails').where('isactive', true);
+//     res.json(result);
+//   }
+//   catch (error) {
+//     console.log(error);
+//     res.status(400);
+//   }
+// });
+
+
+// //for both
+// router.get('/getunactivecinemas', async (req, res) => {
+//   try {
+//     console.log('listing unactive cinemas details');
+//     const result = await knex.withSchema('cinemabackend').table('cinemasdetails').where('isactive', false);
+//     res.json(result);
+//   }
+//   catch (error) {
+//     console.log(error);
+//     res.status(400);
+//   }
+// });
 
 
 

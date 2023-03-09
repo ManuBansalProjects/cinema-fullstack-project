@@ -318,13 +318,21 @@ export class AppServiceService{
   login(loginData:any){
     return this.http.post('/api/auth/login',loginData);
   }
-
+  
+  //sending forgot passwor email to user's email
+  sendEmail(email:any){
+    return this.http.post('/api/auth/sendemail',email);
+  }
 
   logOut(){
     const token=localStorage.getItem('token');
     let headers=new HttpHeaders().set("Authorization",`bearer ${token}`);
     return this.http.get('/api/auth/logout',{headers});
   }
+
+
+
+
 
   getMovies(){
     const token=localStorage.getItem('token');
@@ -338,42 +346,32 @@ export class AppServiceService{
     return this.http.get(`/api/movies/getmovie/${movieid}`,{headers});
   }
 
-  getShows(moviedetails:any){
+  deleteMovie(movieid:any){
     const token=localStorage.getItem('token');
     let headers=new HttpHeaders().set('Authorization',`bearer ${token}`);
-    return this.http.post('/api/shows/getshows',moviedetails);
+    return this.http.delete(`/api/movies/deletemovie/${movieid}`,{headers:headers});
   }
 
-  getShow(showid:any){
-    return this.http.post('/api/shows/getshow',{showid:showid});
+  addMovie(movieDetails:any){
+    const token=localStorage.getItem('token');
+    let headers=new HttpHeaders().set('Authorization',`bearer ${token}`);
+    return this.http.post('/api/movies/addmovie',movieDetails,{headers:headers});
+  } 
+
+  editMovie(movieid:any, moviedetails:any){
+    let token=localStorage.getItem('token');
+    let headers=new HttpHeaders().set('Authorization',`bearer ${token}`);
+    return this.http.put(`/api/movies/editmovie/${movieid}`,moviedetails,{headers:headers});
   }
-  getCinemaDetails(cinemadetails:any){
-    console.log(cinemadetails);
-    return this.http.post('/api/cinemas/getcinema',cinemadetails);
-  }
+
+
+
+
 
   getCinemas(){
     const token=localStorage.getItem('token');
     let headers=new HttpHeaders().set('Authorization', `bearer ${token}`);
     return this.http.get('/api/cinemas/getcinemas',{headers});
-  }
-
-  getUsers(){
-    const token=localStorage.getItem('token');
-    let headers=new HttpHeaders().set('Authorization', `bearer ${token}`);
-    return this.http.get('/api/auth/getusers',{headers});
-  }
-
-  getUser(id:any){
-    const token=localStorage.getItem('token');
-    let headers=new HttpHeaders().set('Authorization',`bearer ${token}`);
-    return this.http.get(`/api/auth/getuser/${id}`,{headers});
-  }
-
-  deleteUser(id:any){
-    const token=localStorage.getItem('token');
-    let headers=new HttpHeaders().set('Authorization',`bearer ${token}`);
-    return this.http.delete(`/api/auth/delete/${id}`,{headers});
   }
 
   deleteCinema(id:any){
@@ -400,39 +398,72 @@ export class AppServiceService{
     return this.http.put(`/api/cinemas/editcinema/${cinemaid}`,cinemaDetails,{headers:headers});
   }
 
-  deleteMovie(movieid:any){
+
+
+
+
+  getUsers(){
+    const token=localStorage.getItem('token');
+    let headers=new HttpHeaders().set('Authorization', `bearer ${token}`);
+    return this.http.get('/api/auth/getusers',{headers});
+  }
+
+  getUser(id:any){
     const token=localStorage.getItem('token');
     let headers=new HttpHeaders().set('Authorization',`bearer ${token}`);
-    return this.http.delete(`/api/movies/deletemovie/${movieid}`,{headers:headers});
+    return this.http.get(`/api/auth/getuser/${id}`,{headers});
   }
 
-  addMovie(movieDetails:any){
+  getUserByToken(){
     const token=localStorage.getItem('token');
     let headers=new HttpHeaders().set('Authorization',`bearer ${token}`);
-    return this.http.post('/api/movies/addmovie',movieDetails,{headers:headers});
-  } 
+    return this.http.get('/api/auth/getuserbytoken',{headers});
+  }
 
-  editMovie(movieid:any, moviedetails:any){
-    let token=localStorage.getItem('token');
+  deleteUser(id:any){
+    const token=localStorage.getItem('token');
     let headers=new HttpHeaders().set('Authorization',`bearer ${token}`);
-    return this.http.put(`/api/movies/editmovie/${movieid}`,moviedetails,{headers:headers});
+    return this.http.delete(`/api/auth/delete/${id}`,{headers});
   }
 
-  sendEmail(email:any){
-    return this.http.post('/api/auth/sendemail',email);
+  
+
+  
+  
+  getShows(movieid:any){
+    const token=localStorage.getItem('token');
+    let headers=new HttpHeaders().set('Authorization',`bearer ${token}`);
+    return this.http.get(`/api/shows/getshows/${movieid}`,{headers});
   }
 
-  tickets:[]=[];
-  saveTicketsToService(tickets:any){
-    this.tickets=tickets;
+  getShow(showid:any){
+    const token=localStorage.getItem('token');
+    let headers=new HttpHeaders().set('Authorization', `bearer ${token}`);
+    return this.http.get(`/api/shows/getshow/${showid}`,{headers});
   }
 
-  sendingTicketsEmitter=new EventEmitter<{tickets:any}>();
-  emitTickets(){
-    console.log('emitting tickets');
-    this.sendingTicketsEmitter.emit({tickets: this.tickets});
-  }
 
+
+
+
+
+  sendBookedTickets(email:any,amount:any,tickets:any,userid:any,movieid:any,cinemaid:any,showid:any){
+    console.log('service sending boking tickets');
+    const token=localStorage.getItem('token');
+    let headers=new HttpHeaders().set('Authorization', `bearer ${token}`);
+
+    const bookingDetails={
+      email:email,
+      amount:amount,
+      tickets:tickets,
+      userid:userid,
+      movieid:movieid,
+      cinemaid:cinemaid,
+      showid:showid
+    }
+    console.log('booking service ',bookingDetails);
+    return this.http.post('/api/booking/booktickets',bookingDetails,{headers:headers});
+  }
 
 
 

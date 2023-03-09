@@ -1,7 +1,13 @@
-<img *ngIf="moviedetails!=undefined" src="../../../assets/movies-posters/{{moviedetails.name}}.jpg" >
+<div class="page">
 
-<h2>{{moviedetails?.name}} </h2>
-<h4>{{moviedetails?.descrp}} </h4>
-<h5>Released Date {{moviedetails?.releaseddate}}</h5>
+  <img *ngIf="moviedetails!=undefined" src="{{moviedetails.movieposter}}">
+  
+  <h2>{{moviedetails?.name}} </h2>
+  <h4>{{moviedetails?.descrp}} </h4>
+  <h5>Released Date {{moviedetails?.releaseddate}}</h5>
+  
+  <a class="book-btn" *ngIf="moviedetails!=undefined" routerLink="/movies/{{moviedetails.name}}/{{moviedetails.id}}/bookmovie">
+    <button mat-stroked-button color="primary">Bookticket</button>
+  </a>
 
-<a *ngIf="moviedetails!=undefined" routerLink="/movies/{{moviedetails.name}}/{{moviedetails.id}}/bookmovie">Book ticket</a>
+</div>

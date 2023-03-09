@@ -1,7 +1,7 @@
 <div class="page" >
     
     <div class="form-container">
-      <h1>Adding a new-Movie</h1>
+      <h1>Editing a Movie</h1>
   
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div>
@@ -28,7 +28,15 @@
         <span class="warning" *ngIf="form.controls['descrp'].touched && form.controls['name'].invalid">Descrption is invalid</span>
   
         <br><br>
-  
+        
+        <div>
+          <label>Movie Poster</label><br>
+          <input type="text" formControlName="movieposter">
+        </div>
+        <span class="warning" *ngIf="form.controls['movieposter'].touched && form.controls['movieposter'].invalid">Movie poster Link is invalid</span>
+        
+        <br><br>
+
         <button class="formBtn" mat-stroked-button color="warn"   type="button" (click)="cancel()">Cancel</button>
         <button class="formBtn" mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Submit</button>
       </form>

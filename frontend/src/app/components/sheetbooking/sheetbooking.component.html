@@ -1,7 +1,7 @@
 <div class="show-container">
-  <div class="show">
+  <div class="show" *ngIf="cinema!=undefined">
     <h1>Booking seat for {{moviename}} </h1>
-    <h2>at {{show.cinemaname}} ,{{show.cinemaaddress}},{{show.cinemacity}} </h2>
+    <h2>at {{cinema.name}} ,{{cinema.address}},{{cinema.city}} </h2>
     <h3>at {{show.screeningdate}}, {{show.screeningtime}} </h3>
   </div>
   
@@ -26,6 +26,7 @@
 <div class="sheet-container">
 
   <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+    
     <div *ngFor="let sheetrow of sheetrows">
       <span *ngFor="let sheetcolumn of sheetcolumns">
         <input type='checkbox'  name="checkbox{{sheetrow*12+sheetcolumn}}" #check="ngModel" ngModel (change)="onClick(check,sheetrow*12+sheetcolumn)">
@@ -34,9 +35,9 @@
     
     <h1 class="eyes">All Eyes this side</h1>
     
-    <hr>
+    <div class="screen"> Screen  </div>
   
-    <button *ngIf="!isDisable">Proceed to pay for {{ticketCount}} tickets </button>
+    <button *ngIf="!isDisable" mat-raised-button color="primary">Proceed to pay for {{ticketCount}} tickets </button>
     <p *ngIf="ticketCount>5">you can only book maximum of 5 tickets only</p>
   </form>
 

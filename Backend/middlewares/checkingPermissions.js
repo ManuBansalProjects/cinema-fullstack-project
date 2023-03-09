@@ -43,6 +43,8 @@ const tokenChecking = (async (req, res, next) => {
 
 
 
+
+//admin checking middleware
 const adminChecking = (async (req, res, next) => {
   try {
     if (record.role == true) {
@@ -62,6 +64,7 @@ const adminChecking = (async (req, res, next) => {
 
 
 
+//user checking middleware
 
 // const userChecking = (async (req, res, next) => {
 //   try {
@@ -81,6 +84,7 @@ const adminChecking = (async (req, res, next) => {
 
 
 
+//admin and self user middleware
 
 // const adminAndSelfUserAccess = (async (req, res, next) => {
 //   try {
@@ -99,6 +103,7 @@ const adminChecking = (async (req, res, next) => {
 
 
 
+//only self access middleware
 
 // const selfAccess = (async (req, res, next) => {
 //   try {
@@ -117,4 +122,4 @@ const adminChecking = (async (req, res, next) => {
 
 // module.exports = { tokenChecking, adminChecking, userChecking, adminAndSelfUserAccess, selfAccess, id, role };
 
-module.exports = { tokenChecking, id, role, record, adminChecking };
+module.exports = { tokenChecking, id, adminChecking };

@@ -19,6 +19,8 @@ const nodemailer = require('nodemailer');
 
 const configMailTransporter = nodemailer.createTransport({
   service: 'gmail',
+  port: 465,
+  host: 'smtp.gmail.com',
   auth: {
     user: "manubansal.cse23@jecrc.ac.in",
     pass: "Manubansal@444"

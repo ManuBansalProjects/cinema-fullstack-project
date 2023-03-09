@@ -50,6 +50,7 @@
 }
 
 
+
 .main{
   display: flex;
   justify-content: space-evenly;
@@ -62,6 +63,15 @@
 
 .operations{
   margin-left: 4px;
+  text-decoration: none;
 }
+
+
+.movieposter{
+  height: 40px;
+  width: 40px;
+}
+
+
 
 

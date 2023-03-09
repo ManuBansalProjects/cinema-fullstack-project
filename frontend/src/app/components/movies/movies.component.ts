@@ -12,7 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class MoviesComponent implements OnInit {
 
-  displayedColumns:string[]=['id', 'name', 'releaseddate','descrp','operations'];
+  displayedColumns:string[]=['id','movieposter', 'name', 'releaseddate','descrp','operations'];
 
   constructor(private service:AppServiceService,private router:Router,private dialogRef:MatDialog,private toastr:ToastrService){
 

@@ -29,13 +29,18 @@ export class RegistrationComponent implements OnInit{
   onSubmit(){
 
     //calling service to register the user
-    this.service.registration(this.registerform.value).subscribe((response)=>{
+    this.service.registration(this.registerform.value).subscribe((response:any)=>{
       console.log(response);
-      this.toastr.success('registered successfully','message from website',{timeOut:3000});
-      // this.registerform.reset();
+
+      if(response.message!=null){
+        this.toastr.success(response.message,'message from website',{timeOut:3000});
+        // this.registerform.reset();
+      }
+      else{
+        this.toastr.error(response.error,'message from website',{timeOut:3000});
+      }
       this.router.navigate(['/login']);
     });
-
 
  }
 

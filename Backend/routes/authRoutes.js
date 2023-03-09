@@ -22,16 +22,16 @@ let encryptionMethod = 'AES-256-CBC'; //this is our encryption method
 let key = Crypto.createHash('sha512').update(secret_key, 'utf-8').digest('hex').substring(0, 32); //create key
 let iv = Crypto.createHash('sha512').update(secret_iv, 'utf-8').digest('hex').substring(0, 16); //same create iv using 'sha512'
 
-// encryptString('manu bansal', encryptionMethod, key, iv)
 
+//call the encrypt like-> encryptString('manu bansal', encryptionMethod, key, iv)
 function encryptString(plain_text, encryptionMethod, secret, iv) {
   let encryptor = Crypto.createCipheriv(encryptionMethod, secret, iv); //encrypt using AES-256-CBC
   let aes_encrypted = encryptor.update(plain_text, 'utf8', 'base64') + encryptor.final('base64'); //convert to base64
   return Buffer.from(aes_encrypted).toString('base64');  //return encrypted string
 }
 
-// decryptString('manu bansal', encryptionMethod, key, iv)
 
+//call the decrypt like-> decryptString('manu bansal', encryptionMethod, key, iv)
 function decryptString(encryptedString, encryptionMethod, secret, iv) {
   const buff = Buffer.from(encryptedString, 'base64'); //get base64 string
   encryptedString = buff.toString('utf-8'); // convert to string
@@ -43,7 +43,6 @@ function decryptString(encryptedString, encryptionMethod, secret, iv) {
 
 
 //user-registration
-//for users
 router.post('/registration', body('name').isLength({ min: 3 }), body('email').isEmail(), body('password').isLength({ min: 8 }), async (req, res) => {
   try {
     console.log('user is registering');
@@ -53,11 +52,19 @@ router.post('/registration', body('name').isLength({ min: 3 }), body('email').is
       res.status(400).json({ error: 'error accured: credentials are not valid' });
     }
 
-    //encrypting password
-    req.body.password = encryptString(req.body.password, encryptionMethod, key, iv);
-    console.log('registering password is ', req.body.password);
-    await knex.withSchema('cinemabackend').table('usersdetails').insert(req.body);
-    res.json({ message: 'registration successfull' });
+    const alreadyExists = await knex.withSchema('cinemabackend').table('usersdetails').where('email', req.body.email);
+
+    if (alreadyExists.length) {
+      res.json({ error: 'error: Email is already exists' });
+    }
+    else {
+      //encrypting password
+      req.body.password = encryptString(req.body.password, encryptionMethod, key, iv);
+      console.log('registering password is ', req.body.password);
+
+      await knex.withSchema('cinemabackend').table('usersdetails').insert(req.body);
+      res.json({ message: 'success: registration successfull' });
+    }
   }
   catch (error) {
     console.log('catch', error);
@@ -68,7 +75,6 @@ router.post('/registration', body('name').isLength({ min: 3 }), body('email').is
 
 
 //login-> token generation
-//for both
 router.post('/login', body('email').isEmail(), body('password').isLength({ min: 8 }), async (req, res) => {
   try {
     console.log('user is logging in');
@@ -83,10 +89,11 @@ router.post('/login', body('email').isEmail(), body('password').isLength({ min: 
       res.json({ error: ' no record found' });
     }
 
-    //matching incoming password and the stored hash password
+    //decrypting stored(hashed) password
     let password = decryptString(record[0].password, encryptionMethod, key, iv);
     console.log(password);
 
+    //matching incoming and decrypt password
     if (req.body.password != password) {
       res.json({ error: 'password not matched' });
     }
@@ -104,6 +111,8 @@ router.post('/login', body('email').isEmail(), body('password').isLength({ min: 
 })
 
 
+
+
 //sending forgot password email to user
 router.post('/sendemail', body('email').isEmail(), async (req, res) => {
   try {
@@ -117,17 +126,6 @@ router.post('/sendemail', body('email').isEmail(), async (req, res) => {
     }
     else {
       //sending mail notification
-      const nodemailer = require('nodemailer');
-
-      const configMailTransporter = nodemailer.createTransport({
-        service: 'gmail',
-        port: 465,
-        host: 'smtp.gmail.com',
-        auth: {
-          user: "manubansal.cse23@jecrc.ac.in",
-          pass: "Manubansal@444"
-        }
-      });
 
       let details = {
         from: "manubansal.cse23@jecrc.ac.in",
@@ -137,7 +135,7 @@ router.post('/sendemail', body('email').isEmail(), async (req, res) => {
       }
 
       //sending mail
-      // const { configMailTransporter } = require('../config.js');
+      const { configMailTransporter } = require('../config.js');
 
       configMailTransporter.sendMail(details, (err) => {
         if (err) {
@@ -185,48 +183,8 @@ router.get('/getrole', async (req, res) => {
 })
 
 
-router.post('/addnewuser', adminChecking, async (req, res) => {
-  try {
-    await knex.withSchema('cinemabackend').table('usersdetails').insert(req.body);
-    res.json({ message: 'user added successfully' });
-  }
-  catch (error) {
-    res.json({ error: error });
-    // res.status(400);
-  }
-})
 
-// //getAlldata--------------this is only for testing purpose
-// //for admin
-// router.get('/activeusers', async (req, res) => {
-//   try {
-//     console.log('listing all the active users details');
-//     const result = await knex.withSchema('cinemabackend').table('usersdetails').where('isactive', true);
-//     res.json(result);
-//   }
-//   catch (error) {
-//     console.log(error);
-//     res.status(400);
-//   }
-// });
-
-
-
-// //for admin
-// router.get('/unactiveusers', async (req, res) => {
-//   try {
-//     console.log('listing all the unactive users details');
-//     const result = await knex.withSchema('cinemabackend').table('usersdetails').where('isactive', false);
-//     res.json(result);
-//   }
-//   catch (error) {
-//     console.log(error);
-//     res.status(400);
-//   }
-// });
-
-
-//for admin
+//getting all users
 router.get('/getusers', async (req, res) => {
   try {
     console.log('listing all the users details');
@@ -241,7 +199,8 @@ router.get('/getusers', async (req, res) => {
 });
 
 
-//for both
+
+//getting a particular user
 router.get('/getuser/:id', async (req, res) => {
   try {
     console.log('listing a particular user details');
@@ -255,8 +214,23 @@ router.get('/getuser/:id', async (req, res) => {
 });
 
 
+//getting a particualr user by token
+router.get('/getuserbytoken', async (req, res) => {
+  try {
+    let temp = req.headers.authorization.split(' ');
+    const token = temp[1];
+    const result = await knex.withSchema('cinemabackend').table('usersdetails').where('jwt', token);
+    res.json({ result: result });
+  }
+  catch (error) {
+    console.log(error);
+    res.status(400);
+  }
+});
+
+
+
 //updating  a particular user
-//for both
 router.put('/update', body('name').isLength({ min: 3 }), body('email').isEmail(), body('password').isLength({ min: 8 }), async (req, res) => {
   try {
     console.log('user is updating the details');
@@ -288,7 +262,6 @@ router.put('/update', body('name').isLength({ min: 3 }), body('email').isEmail()
 
 
 //logout
-//for both
 router.get('/logout', async (req, res) => {
   try {
     console.log('user is logging out');
@@ -307,8 +280,7 @@ router.get('/logout', async (req, res) => {
 
 
 
-//deleting a particular user
-//for both
+//deleting a particular user (soft-delete => isactive=0)
 router.delete('/delete/:id', async (req, res) => {
   try {
     console.log('deleting a particular user id:', req.params.id);
@@ -320,5 +292,37 @@ router.delete('/delete/:id', async (req, res) => {
     res.status(400);
   }
 })
+
+
+
+// //getAlldata--------------this is only for testing purpose
+// //for admin
+// router.get('/activeusers', async (req, res) => {
+//   try {
+//     console.log('listing all the active users details');
+//     const result = await knex.withSchema('cinemabackend').table('usersdetails').where('isactive', true);
+//     res.json(result);
+//   }
+//   catch (error) {
+//     console.log(error);
+//     res.status(400);
+//   }
+// });
+
+
+
+// //for admin
+// router.get('/unactiveusers', async (req, res) => {
+//   try {
+//     console.log('listing all the unactive users details');
+//     const result = await knex.withSchema('cinemabackend').table('usersdetails').where('isactive', false);
+//     res.json(result);
+//   }
+//   catch (error) {
+//     console.log(error);
+//     res.status(400);
+//   }
+// });
+
 
 module.exports = router;

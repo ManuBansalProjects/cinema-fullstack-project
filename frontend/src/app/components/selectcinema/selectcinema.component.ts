@@ -33,15 +33,15 @@ export class SelectcinemaComponent implements OnInit{
           this.moviename=params['moviename'];
         })
 
-        this.service.getShows({movieid:this.movieid}).subscribe((response:any)=>{
+        this.service.getShows(this.movieid).subscribe((response:any)=>{
           this.shows=response.shows;
           console.log('displaying shows \n', this.shows);
 
           for(let i=0;i<this.shows.length;i++){
-            this.service.getCinemaDetails({cinemaid:this.shows[i].cinemaid}).subscribe((response:any)=>{
-              this.shows[i].cinemaname=response.name;
-              this.shows[i].cinemaaddress=response.address;
-              this.shows[i].cinemacity=response.city;
+            this.service.getCinema(this.shows[i].cinemaid).subscribe((response:any)=>{
+              this.shows[i].cinemaname=response.result.name;
+              this.shows[i].cinemaaddress=response.result.address;
+              this.shows[i].cinemacity=response.result.city;
               console.log(this.shows[i]);
             })
           }

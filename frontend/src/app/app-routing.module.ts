@@ -25,7 +25,7 @@ const routes: Routes = [
       {path:'movies/editmovie/:id', component:EditmovieComponent},
       {path:'movies/:moviename/:movieid', component:MoviedetailsComponent},
       {path:'movies/:moviename/:movieid/bookmovie', component:SelectcinemaComponent},
-      {path:'movies/:moviename/:movieid/bookmovie/sheetbooking/:showid', component:SheetbookingComponent},
+      {path:'movies/:moviename/:movieid/:cinemaid/:showid/sheetbooking', component:SheetbookingComponent},
       {path:'cinemas', component:CinemasComponent},
       {path:'users', component:UsersComponent},
       {path:'cinemas/addnewcinema', component:AddnewcinemaComponent},

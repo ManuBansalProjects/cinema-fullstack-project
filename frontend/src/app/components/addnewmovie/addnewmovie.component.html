@@ -28,6 +28,14 @@
         <span class="warning" *ngIf="descrp.touched && descrp.invalid">Descrption is invalid</span>
   
         <br><br>
+
+        <div>
+          <label>Movie poster Link</label><br>
+          <input type="text" name="movieposter" ngModel #movieposter="ngModel" required>
+        </div>
+        <span class="warning" *ngIf="movieposter.touched && movieposter.invalid">Movie poster Link is invalid</span>
+        
+        <br><br>
   
         <button class="formBtn" mat-stroked-button color="warn"   type="button" (click)="cancel()">Cancel</button>
         <button class="formBtn" mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Submit</button>

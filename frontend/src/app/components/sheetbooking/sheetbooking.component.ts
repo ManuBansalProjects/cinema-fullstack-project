@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppServiceService } from 'src/app/services/app-service.service';
 
+
 @Component({
   selector: 'app-sheetbooking',
   templateUrl: './sheetbooking.component.html',
@@ -13,42 +14,45 @@ export class SheetbookingComponent implements OnInit{
 
   }
 
-  showid:any;
   moviename:any;
-  show:any;
-  cinemaid:any;
   movieid:any;
+  showid:any;
+  cinemaid:any;
+
+  show:any; 
+  cinema:any;
+
+  handler:any=null;
 
   ngOnInit(): void {
 
-    this.service.sendingRoleEmitter.subscribe((data)=>{
+    this.service.sendingSheetBookingRole.subscribe((data)=>{
       let role:any=data.role;
       if(role==-1){
         this.router.navigate(['/']);
       }
 
       else{
+        this.loadStripe();
+
         this.activatedRoute.params.subscribe((params)=>{
-          this.showid=params['showid'];
           this.moviename=params['moviename'];
           this.movieid=params['movieid'];
+          this.showid=params['showid'];        
+          this.cinemaid=params['cinemaid'];
         })
         
         this.service.getShow(this.showid).subscribe((response:any)=>{
-          this.show=response.show;
+          this.show=response.show;      console.log(this.show);
 
-          this.service.getCinemaDetails({cinemaid:this.show.cinemaid}).subscribe((response:any)=>{ 
-            this.show.cinemaname=response.name;
-            this.show.cinemaaddress=response.address;
-            this.show.cinemacity=response.city;
-
-            this.cinemaid=response.id;
+          this.service.getCinema(this.cinemaid).subscribe((response:any)=>{ 
+            this.cinema=response.result;     console.log(this.cinema);
           })
         })   
       }
     })
 
-    this.service.setRole();
+    this.service.sheetBookingRole();
   }
 
 
@@ -56,30 +60,82 @@ export class SheetbookingComponent implements OnInit{
   
   sheetrows:any[]=[0,1,2,3,4,5,6,7,8,9];
   sheetcolumns:any[]=[1,2,3,4,5,6,7,8,9,10,11,12];
-  booked:any[]=[];
   tickets:any[]=[];
+  stripeToken:any;
 
   onSubmit(form:any){
-
     console.log(form.value);    
+    console.log(this.tickets);
+    this.pay(100*this.ticketCount);
+    // this.sendBookedTicketsToUsersEmail();
+  }
 
-    for(let i=0;i<this.tickets.length;i++){
-      this.booked.push(this.tickets[i]);
+
+  //stripe integrations
+  
+  // sendBookedTicketsToUsersEmail(){
+  //   console.log('sending email function');
+  //   let user:any=this.service.getUserByToken();
+  //   user=user.result;
+
+  //   this.service.sendBookedTickets(user.email, this.ticketCount*100, this.tickets,user.id,this.movieid,this.cinemaid,this.showid).subscribe((response:any)=>{
+  //     console.log(response);
+  //   })
+  // }
+
+  
+
+  pay(amount: any) {    
+ 
+    var handler = (<any>window).StripeCheckout.configure({
+      key: 'pk_test_51MeyA0SEkLm9QFTeKFj2pF7YML9x1TOQ5MlAkQLMjyWAiLNjcIj0M82v7vWIFCHppb6to0n01tudHYqFH5j5QkER00lAg2Y8BJ',
+      locale: 'auto',
+      token: function (token: any) {
+        // You can access the token ID with `token.id`.
+        // Get the token ID to your server-side code for use.
+        console.log(token);
+        alert('Token Created!!');
+      },
+    });
+
+    
+ 
+    handler.open({
+      name: 'Doing payment using stripe',
+      description: 'Booking tickets for BookMyShow',
+      amount: amount * 100
+    });
+ 
+  }
+
+
+  loadStripe() {
+     
+    if(!window.document.getElementById('stripe-script')) {
+      var s = window.document.createElement("script");
+      s.id = "stripe-script";
+      s.type = "text/javascript";
+      s.src = "https://checkout.stripe.com/checkout.js";
+      s.onload = () => {
+        this.handler = (<any>window).StripeCheckout.configure({
+          key: 'pk_test_51MeyA0SEkLm9QFTeKFj2pF7YML9x1TOQ5MlAkQLMjyWAiLNjcIj0M82v7vWIFCHppb6to0n01tudHYqFH5j5QkER00lAg2Y8BJ',
+          locale: 'auto',
+          token: function (token: any) {
+            // You can access the token ID with `token.id`.
+            // Get the token ID to your server-side code for use.
+            console.log(token)
+            alert('Payment Success!!');
+          }
+        });
+      }
+       
+      window.document.body.appendChild(s);
     }
 
-    // this.service.saveTicketsToService(this.tickets);
-    // this.router.navigate([`/payment/${this.movieid}/${this.cinemaid}/${this.showid}`]);
-
-    this.pay();
-
   }
 
 
-
-  pay(){
-
-  }
-
+ 
 
   ticketCount=0;
   isDisable=1;

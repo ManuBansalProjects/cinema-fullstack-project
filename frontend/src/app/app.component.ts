@@ -38,7 +38,6 @@ export class AppComponent implements OnInit{
   
 
 
-  title = 'frontend';
 
 
 
@@ -48,6 +47,15 @@ export class AppComponent implements OnInit{
 
 
 
+
+
+
+
+
+
+  
+                                        // angular material just for paratice
+  // title = 'frontend';
 
 
 

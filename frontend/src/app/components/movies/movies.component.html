@@ -4,7 +4,8 @@
     
     <a class='link' routerLink="/movies/{{movie.name}}/{{movie.id}}">
       <div class="movie-card">
-        <img src="../../../assets/movies-posters/{{movie.name}}.jpg" class="poster">
+        <!-- <img src="../../../assets/movies-posters/{{movie.name}}.jpg" class="poster"> -->
+        <img src="{{movie.movieposter}}" class="poster">
         <p class="title">{{movie.name}}</p>
       </div>
     </a>
@@ -36,7 +37,11 @@
         <td mat-cell *matCellDef="let element"> {{element.id}} </td>
       </ng-container>
   
-      
+      <ng-container matColumnDef="movieposter">
+        <th mat-header-cell *matHeaderCellDef> Movie Poster </th>
+        <td mat-cell *matCellDef="let element"> <img class="movieposter" src="{{element.movieposter}}"> </td>
+      </ng-container>
+
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef> Name </th>
         <td mat-cell *matCellDef="let element"> {{element.name}} </td>
